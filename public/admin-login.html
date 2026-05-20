@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Login - College Canteen</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#e23744;--primary-dark:#c1121f;
+  --dark:#1a1d2e;--gray:#686b78;--light:#f8f9fc;--white:#fff;
+  --gradient:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  --gradient-2:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);
+}
+body{
+  font-family:'Inter',sans-serif;
+  background:linear-gradient(135deg,#1a1d2e 0%,#22283f 50%,#2d3561 100%);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.container{
+  width:100%;
+  max-width:440px;
+}
+.logo{
+  text-align:center;
+  margin-bottom:32px;
+}
+.logo-icon{
+  font-size:64px;
+  margin-bottom:16px;
+  animation:float 3s ease-in-out infinite;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+.logo-text{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:28px;
+  font-weight:900;
+  background:var(--gradient-2);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.logo-sub{
+  color:#9ca3af;
+  font-size:14px;
+  margin-top:4px;
+  font-weight:500;
+}
+.card{
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(10px);
+  border-radius:24px;
+  padding:40px;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+  border:1px solid rgba(255,255,255,.2);
+}
+.card-title{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:24px;
+  font-weight:800;
+  color:var(--dark);
+  margin-bottom:8px;
+  text-align:center;
+}
+.card-subtitle{
+  font-size:14px;
+  color:var(--gray);
+  text-align:center;
+  margin-bottom:32px;
+}
+.alert{
+  padding:14px 16px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:600;
+  margin-bottom:20px;
+  display:none;
+}
+.alert.show{display:block}
+.alert-error{
+  background:#fee;
+  color:#c00;
+  border:1px solid #fcc;
+}
+.alert-success{
+  background:#efe;
+  color:#060;
+  border:1px solid #cfc;
+}
+.form-group{
+  margin-bottom:20px;
+}
+.form-label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  color:var(--dark);
+  margin-bottom:8px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+.form-input{
+  width:100%;
+  padding:14px 16px;
+  border-radius:12px;
+  border:2px solid #e8e8e8;
+  font-size:14px;
+  font-family:'Inter',sans-serif;
+  transition:.2s;
+  background:#fafafa;
+}
+.form-input:focus{
+  outline:none;
+  border-color:var(--primary);
+  background:var(--white);
+  box-shadow:0 0 0 4px rgba(226,55,68,.08);
+}
+.btn{
+  width:100%;
+  padding:16px;
+  border-radius:12px;
+  border:none;
+  font-size:15px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  background:var(--gradient-2);
+  color:#fff;
+  box-shadow:0 4px 12px rgba(226,55,68,.25);
+}
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(226,55,68,.35);
+}
+.btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+  transform:none;
+}
+.back-link{
+  display:block;
+  text-align:center;
+  margin-top:24px;
+  color:#9ca3af;
+  font-size:14px;
+  font-weight:600;
+  text-decoration:none;
+  transition:.2s;
+}
+.back-link:hover{
+  color:var(--primary);
+}
+.info-box{
+  background:rgba(226,55,68,.1);
+  border:1px solid rgba(226,55,68,.2);
+  border-radius:12px;
+  padding:16px;
+  margin-top:24px;
+}
+.info-box-title{
+  font-weight:700;
+  font-size:13px;
+  color:var(--primary);
+  margin-bottom:8px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+.info-box-text{
+  font-size:13px;
+  color:var(--gray);
+  line-height:1.6;
+}
+.info-box code{
+  background:rgba(0,0,0,.05);
+  padding:2px 6px;
+  border-radius:4px;
+  font-family:monospace;
+  font-size:12px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="logo">
+    <div class="logo-icon">🔐</div>
+    <div class="logo-text">Admin Access</div>
+    <div class="logo-sub">College Canteen Management</div>
+  </div>
+
+  <div class="card">
+    <h2 class="card-title">Admin Login</h2>
+    <p class="card-subtitle">Enter your admin credentials to continue</p>
+
+    <div class="alert alert-error" id="errorAlert"></div>
+    <div class="alert alert-success" id="successAlert"></div>
+
+    <form id="adminLoginForm">
+      <div class="form-group">
+        <label class="form-label">Admin Email</label>
+        <input type="email" id="adminEmail" class="form-input" placeholder="admin@college.edu" required/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Admin Password</label>
+        <input type="password" id="adminPassword" class="form-input" placeholder="Enter admin password" required/>
+      </div>
+
+      <button type="submit" class="btn" id="loginBtn">
+        <span class="material-symbols-outlined">login</span>
+        <span>Login to Admin Panel</span>
+      </button>
+    </form>
+
+    <a href="/" class="back-link">← Back to Home</a>
+
+    <div class="info-box">
+      <div class="info-box-title">🔒 Admin Only</div>
+      <div class="info-box-text">
+        This area is restricted to authorized canteen administrators only. 
+        Students should use the regular login page.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const form = document.getElementById('adminLoginForm');
+const errorAlert = document.getElementById('errorAlert');
+const successAlert = document.getElementById('successAlert');
+const loginBtn = document.getElementById('loginBtn');
+
+function showError(message) {
+  errorAlert.textContent = message;
+  errorAlert.classList.add('show');
+  successAlert.classList.remove('show');
+}
+
+function showSuccess(message) {
+  successAlert.textContent = message;
+  successAlert.classList.add('show');
+  errorAlert.classList.remove('show');
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const email = document.getElementById('adminEmail').value.trim();
+  const password = document.getElementById('adminPassword').value;
+  
+  if (!email || !password) {
+    showError('Please enter both email and password');
+    return;
+  }
+  
+  loginBtn.disabled = true;
+  loginBtn.innerHTML = '<span class="material-symbols-outlined">hourglass_empty</span><span>Logging in...</span>';
+  
+  try {
+    const response = await fetch('/api/auth/admin-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      showError(data.error || 'Invalid credentials');
+      loginBtn.disabled = false;
+      loginBtn.innerHTML = '<span class="material-symbols-outlined">login</span><span>Login to Admin Panel</span>';
+      return;
+    }
+    
+    // Save admin session
+    localStorage.setItem('admin_session', JSON.stringify(data));
+    
+    showSuccess('✅ Login successful! Redirecting...');
+    loginBtn.innerHTML = '<span class="material-symbols-outlined">check_circle</span><span>Success!</span>';
+    
+    setTimeout(() => {
+      window.location.href = '/admin';
+    }, 1000);
+    
+  } catch (error) {
+    showError('Network error. Please try again.');
+    loginBtn.disabled = false;
+    loginBtn.innerHTML = '<span class="material-symbols-outlined">login</span><span>Login to Admin Panel</span>';
+  }
+});
+</script>
+
+</body>
+</html>

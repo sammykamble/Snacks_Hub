@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Orders – Snacks Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#e23744;--dark:#282c3f;--gray:#686b78;--light:#f4f4f5;--white:#fff;--green:#26a541;--orange:#f8a305}
+body{font-family:'Be Vietnam Pro',sans-serif;background:var(--light);color:var(--dark)}
+a{text-decoration:none;color:inherit}
+nav{background:var(--white);box-shadow:0 2px 8px rgba(0,0,0,.08);padding:0 24px;height:68px;display:flex;align-items:center;gap:16px;}
+.logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--primary)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.nav-btn{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:'Be Vietnam Pro',sans-serif}
+.page{max-width:1000px;margin:32px auto;padding:0 24px}
+.page-header{margin-bottom:28px}
+.page-header h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;margin-bottom:4px}
+.page-header p{color:var(--gray);font-size:14px}
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+@media(max-width:640px){.stats{grid-template-columns:1fr}}
+.stat-card{background:var(--white);border-radius:12px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.06);display:flex;align-items:center;gap:14px}
+.stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.stat-label{font-size:13px;color:var(--gray);margin-bottom:2px}
+.stat-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800}
+/* Order cards */
+.order-card{background:var(--white);border-radius:14px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:16px;border-left:4px solid transparent;transition:.2s}
+.order-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.order-card.pending{border-color:var(--orange)}
+.order-card.confirmed{border-color:var(--green)}
+.order-card.ready{border-color:#aaa}
+.order-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.order-id{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800}
+.order-date{font-size:12px;color:var(--gray)}
+.status-pill{padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700;text-transform:capitalize}
+.status-pill.pending{background:#fff3e0;color:var(--orange)}
+.status-pill.confirmed{background:#f0fff4;color:var(--green)}
+.status-pill.ready{background:#f5f5f5;color:#aaa}
+.order-items{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.order-item-chip{display:flex;align-items:center;gap:6px;background:var(--light);border-radius:8px;padding:6px 10px;font-size:13px}
+.order-item-chip img{width:28px;height:28px;border-radius:6px;object-fit:cover}
+.order-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--light);padding-top:14px;flex-wrap:wrap;gap:8px}
+.order-total{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800}
+.reorder-btn{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif;display:flex;align-items:center;gap:6px;transition:.2s}
+.reorder-btn:hover{background:#c1121f}
+/* Empty */
+.empty{text-align:center;padding:80px 24px;color:var(--gray)}
+.empty .material-symbols-outlined{font-size:64px;opacity:.35;display:block;margin-bottom:16px}
+.empty h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--dark);margin-bottom:8px}
+/* Tracking bar */
+.tracking-bar{display:flex;align-items:center;gap:0;margin-bottom:10px}
+.track-step{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#bbb}
+.track-step.done{color:var(--green)}
+.track-step.active{color:var(--orange)}
+.track-dot{width:16px;height:16px;border-radius:50%;border:2px solid #bbb;background:#fff;flex-shrink:0}
+.track-step.done .track-dot{background:var(--green);border-color:var(--green)}
+.track-step.active .track-dot{background:var(--orange);border-color:var(--orange)}
+.track-line{flex:1;height:2px;background:#e0e0e0;margin:0 4px}
+.track-line.done{background:var(--green)}
+</style>
+<link rel="stylesheet" href="/dark-mode.css">
+<link rel="stylesheet" href="/advanced-features.css">
+</head>
+<body>
+<nav>
+  <a href="/" class="logo">🍕 Snacks Hub</a>
+  <div class="nav-right">
+
+    <a href="/menu"><button class="nav-btn" style="background:var(--primary);color:#fff">Order Again</button></a>
+    <button class="nav-btn" style="background:var(--light)" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="page">
+  <style>
+    .dash-banner {
+      width: 100%;
+      height: 220px;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    }
+    @media(max-width: 640px) {
+      .dash-banner { height: 160px; }
+    }
+    .dash-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .dash-banner:hover img {
+      transform: scale(1.05);
+    }
+    .dash-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(26,29,46,0.85) 100%);
+      display: flex;
+      align-items: flex-end;
+      padding: 24px 28px;
+    }
+    .dash-banner-text {
+      color: #fff;
+    }
+    .dash-banner-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dash-banner-subtitle {
+      font-size: 14px;
+      font-weight: 500;
+      color: #e2e8f0;
+    }
+  </style>
+
+  <div class="dash-banner">
+    <!-- To change this photo to your real college canteen, replace the src link below with your image URL -->
+    <img src="/images/my-canteen.jpg" alt="College Canteen"/>
+    <div class="dash-banner-overlay">
+      <div class="dash-banner-text">
+        <div class="dash-banner-title"><span class="material-symbols-outlined">restaurant</span> Campus Canteen</div>
+        <div class="dash-banner-subtitle">Fresh, hot food waiting for you!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-header">
+    <h1>My Orders 🧾</h1>
+    <p id="welcomeMsg">Here's your order history</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#fff0f0"><span class="material-symbols-outlined" style="color:var(--primary)">receipt_long</span></div>
+      <div><div class="stat-label">Total Orders</div><div class="stat-val" id="statOrders">0</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#f0fff4"><span class="material-symbols-outlined" style="color:var(--green)">payments</span></div>
+      <div><div class="stat-label">Total Spent</div><div class="stat-val" id="statSpent">₹0</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#fff8e1"><span class="material-symbols-outlined" style="color:var(--orange)">pending_actions</span></div>
+      <div><div class="stat-label">Active Orders</div><div class="stat-val" id="statActive">0</div></div>
+    </div>
+  </div>
+
+  <div id="ordersContainer"></div>
+</div>
+
+<script>
+function logout(){localStorage.removeItem('sh_session');window.location.href='/';}
+
+const sess=JSON.parse(localStorage.getItem('sh_session')||'null');
+if(!sess?.user){
+  // Show login prompt instead of immediate redirect
+  document.body.innerHTML = `
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f4f4f5;padding:20px">
+      <div style="background:white;border-radius:20px;padding:40px;max-width:480px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.1)">
+        <div style="font-size:64px;margin-bottom:20px">🔒</div>
+        <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;margin-bottom:12px;color:#282c3f">Login Required</h2>
+        <p style="color:#686b78;font-size:16px;line-height:1.6;margin-bottom:32px">
+          Please login to view your orders and track them.
+        </p>
+        <div style="display:flex;gap:12px;justify-content:center">
+          <a href="/login" style="text-decoration:none">
+            <button style="background:#e23744;color:white;border:none;border-radius:12px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">
+              Login Now
+            </button>
+          </a>
+          <a href="/" style="text-decoration:none">
+            <button style="background:#f4f4f5;color:#282c3f;border:none;border-radius:12px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">
+              Go Home
+            </button>
+          </a>
+        </div>
+        <p style="margin-top:24px;font-size:14px;color:#686b78">
+          Don't have an account? <a href="/login#register" style="color:#e23744;font-weight:700">Sign up here</a>
+        </p>
+      </div>
+    </div>
+  `;
+  throw new Error('Not logged in');
+}
+else{
+  const name=sess.user.user_metadata?.name||sess.user.email?.split('@')[0]||'there';
+  document.getElementById('welcomeMsg').textContent=`Welcome back, ${name}! Here's your order history.`;
+}
+
+function statusStep(status){
+  const steps=['pending','confirmed','ready'];
+  return steps.indexOf(status);
+}
+
+async function loadOrders(){
+  const userId=sess?.user?.id;
+  const r=await fetch(`/api/orders${userId?'?user_id='+userId:''}`);
+  const orders=await r.json();
+
+  document.getElementById('statOrders').textContent=orders.length;
+  document.getElementById('statSpent').textContent=`₹${orders.reduce((s,o)=>s+(o.total_amount||0),0).toFixed(2)}`;
+  document.getElementById('statActive').textContent=orders.filter(o=>o.status==='pending'||o.status==='confirmed').length;
+
+  const container=document.getElementById('ordersContainer');
+  if(!orders.length){
+    container.innerHTML=`<div class="empty"><span class="material-symbols-outlined">receipt_long</span><h2>No orders yet</h2><p>Your orders will appear here once you place one.</p><a href="/menu"><button style="margin-top:20px;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer">Browse Menu</button></a></div>`;
+    return;
+  }
+
+  container.innerHTML=orders.map(order=>{
+    const items=Array.isArray(order.items)?order.items:[];
+    const pickupTime = items.length > 0 && items[0].pickup_time ? items[0].pickup_time : 'Immediately (10-15 min)';
+    const date=new Date(order.created_at).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const step=statusStep(order.status||'pending');
+    return `<div class="order-card ${order.status||'pending'}">
+      <div class="order-top">
+        <div>
+          <div class="order-id">Order #${String(order.id).slice(-6)}</div>
+          <div class="order-date">${date}</div>
+        </div>
+        <div style="text-align: right">
+          <span class="status-pill ${order.status||'pending'}">${order.status||'pending'}</span>
+          <div style="font-size: 11px; font-weight: 700; color: var(--primary); margin-top: 6px; max-width: 150px">🕒 ${pickupTime}</div>
+        </div>
+      </div>
+      <div class="tracking-bar">
+        <div class="track-step ${step>=0?'done':''}"><div class="track-dot"></div>Placed</div>
+        <div class="track-line ${step>=1?'done':''}"></div>
+        <div class="track-step ${step>=1?'done':step===0?'active':''}"><div class="track-dot"></div>Confirmed</div>
+        <div class="track-line ${step>=2?'done':''}"></div>
+        <div class="track-step ${step>=2?'done':''}"><div class="track-dot"></div>Ready</div>
+      </div>
+      <div class="order-items">
+        ${items.map(i=>`<div class="order-item-chip"><img src="${i.image_url||'https://via.placeholder.com/28'}" onerror="this.src='https://via.placeholder.com/28'"/>${i.name} x${i.qty}</div>`).join('')}
+      </div>
+      <div class="order-foot">
+        <div class="order-total">₹${parseFloat(order.total_amount||0).toFixed(2)}</div>
+        <button class="reorder-btn" onclick="reorder(${JSON.stringify(JSON.stringify(items))})"><span class="material-symbols-outlined" style="font-size:16px">refresh</span>Reorder</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function reorder(itemsJson){
+  const items=JSON.parse(itemsJson);
+  const cart=items.map(i=>({...i}));
+  localStorage.setItem('sh_cart',JSON.stringify(cart));
+  window.location.href='/checkout';
+}
+
+loadOrders();
+</script>
+<script src="/features.js"></script>
+<script src="/advanced-features.js"></script>
+<script src="/order-tracking.js"></script>
+<script src="/reviews.js"></script>
+<script src="/email-notifications.js"></script>
+</body>
+</html>

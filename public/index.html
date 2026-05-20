@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>College Canteen - Order Food Online | Campus Canteen</title>
+<meta name="description" content="Order fresh food from your college canteen. Browse menu, place orders, and get food ready for pickup."/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --red:#e23744;--red-dark:#c1121f;--orange:#ff6b35;
+  --dark:#1c1c1c;--dark2:#282c3f;--gray:#686b78;--light-gray:#f4f4f5;
+  --white:#fff;--green:#26a541;--yellow:#f8a305;
+  --shadow:0 4px 24px rgba(0,0,0,.1);--radius:16px
+}
+body{font-family:'Inter',sans-serif;background:#f4f4f5;color:var(--dark)}
+a{text-decoration:none;color:inherit}
+.ms{font-family:'Material Symbols Outlined';font-size:22px;line-height:1;font-style:normal;display:inline-flex;align-items:center;justify-content:center}
+
+/* ── NAV ── */
+nav{background:#fff;position:sticky;top:0;z-index:200;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.nav-wrap{max-width:1280px;margin:auto;display:flex;align-items:center;gap:16px;padding:0 24px;height:70px}
+.logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:900;color:var(--red);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.logo-emoji{font-size:28px}
+.nav-location{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:var(--light-gray);cursor:pointer;font-size:13px;font-weight:600;white-space:nowrap;border:1.5px solid transparent;transition:.2s}
+.nav-location:hover{border-color:var(--red)}
+.nav-search{flex:1;max-width:560px;background:var(--light-gray);border-radius:10px;display:flex;align-items:center;gap:10px;padding:0 16px;height:46px;border:1.5px solid transparent;transition:.2s}
+.nav-search:focus-within{border-color:var(--red);background:#fff;box-shadow:0 0 0 3px rgba(226,55,68,.08)}
+.nav-search input{flex:1;border:none;background:transparent;font-size:14px;outline:none;font-family:'Inter',sans-serif}
+.nav-actions{display:flex;align-items:center;gap:10px;margin-left:auto}
+.nav-btn{padding:10px 20px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:.2s;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:6px}
+.btn-outline{background:transparent;border:2px solid var(--red);color:var(--red)}
+.btn-outline:hover{background:rgba(226,55,68,.06)}
+.btn-fill{background:var(--red);color:#fff}
+.btn-fill:hover{background:var(--red-dark);transform:translateY(-1px)}
+.cart-btn{position:relative;display:flex;align-items:center;gap:8px;background:var(--light-gray);padding:10px 16px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:700;border:none;transition:.2s}
+.cart-btn:hover{background:#e8e8e8}
+.cart-badge{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;font-size:10px;font-weight:800;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+#userMenuBtn{display:none;align-items:center;gap:8px;padding:8px 16px;border-radius:10px;background:var(--light-gray);cursor:pointer;border:none;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;position:relative}
+.user-dropdown{display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.15);width:200px;overflow:hidden;z-index:300}
+.user-dropdown a{display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:14px;font-weight:600;transition:.15s}
+.user-dropdown a:hover{background:var(--light-gray);color:var(--red)}
+.user-dropdown .divider-line{height:1px;background:#f0f0f0;margin:4px 0}
+#userMenuBtn:hover .user-dropdown{display:block}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,#1c1c2e 0%,#16213e 50%,#0f3460 100%);color:#fff;padding:72px 24px 0;position:relative;overflow:hidden;min-height:480px}
+.hero-bg{position:absolute;inset:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.18}
+.hero-inner{max-width:1280px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:flex-end;position:relative;z-index:2}
+.hero-text h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(36px,5vw,60px);font-weight:900;line-height:1.1;margin-bottom:20px}
+.hero-text h1 .accent{background:linear-gradient(135deg,#ff6b35,#e23744);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-text p{font-size:18px;opacity:.8;margin-bottom:36px;line-height:1.6}
+.hero-search-bar{background:#fff;border-radius:14px;display:flex;align-items:center;gap:12px;padding:10px 10px 10px 20px;box-shadow:0 8px 32px rgba(0,0,0,.25);max-width:540px}
+.hero-search-bar input{flex:1;border:none;outline:none;font-size:16px;font-family:'Inter',sans-serif;color:var(--dark)}
+.hero-search-bar button{background:var(--red);color:#fff;border:none;border-radius:10px;padding:14px 28px;font-weight:700;font-size:15px;cursor:pointer;white-space:nowrap;transition:.2s;font-family:'Inter',sans-serif}
+.hero-search-bar button:hover{background:var(--red-dark)}
+.hero-stats{display:flex;gap:32px;margin-top:32px}
+.stat{text-align:center}
+.stat-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:900;color:#fff}
+.stat-label{font-size:13px;opacity:.6;margin-top:2px}
+.hero-image{display:flex;align-items:flex-end;justify-content:center;padding-bottom:0}
+.hero-image img{width:100%;max-width:440px;filter:drop-shadow(0 20px 60px rgba(0,0,0,.5));animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+/* ── TRUSTED BRANDS ── */
+.brands-strip{background:#fff;padding:20px 24px;border-bottom:1px solid #f0f0f0}
+.brands-inner{max-width:1280px;margin:auto;display:flex;align-items:center;gap:40px;overflow-x:auto;scrollbar-width:none}
+.brands-inner::-webkit-scrollbar{display:none}
+.brand-item{display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:14px;font-weight:600;color:var(--gray);opacity:.7;flex-shrink:0}
+.brand-emoji{font-size:22px}
+
+/* ── SECTION ── */
+.section{max-width:1280px;margin:auto;padding:48px 24px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;color:var(--dark)}
+.see-all{color:var(--red);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;transition:.2s}
+.see-all:hover{gap:8px}
+
+/* ── CATEGORIES ── */
+.cats-scroll{display:flex;gap:16px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.cats-scroll::-webkit-scrollbar{display:none}
+.cat-card{flex-shrink:0;width:110px;border-radius:14px;overflow:hidden;background:#fff;cursor:pointer;border:2px solid transparent;transition:.25s;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.cat-card:hover,.cat-card.active{border-color:var(--red);transform:translateY(-3px);box-shadow:0 8px 24px rgba(226,55,68,.15)}
+.cat-card img{width:100%;height:80px;object-fit:cover}
+.cat-card span{display:block;text-align:center;font-size:13px;font-weight:700;padding:10px 6px;color:var(--dark)}
+
+/* ── PROMO BANNERS ── */
+.promos-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:0}
+.promo-card{border-radius:16px;padding:28px 32px;color:#fff;position:relative;overflow:hidden;min-height:140px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:.2s}
+.promo-card:hover{transform:translateY(-3px)}
+.promo-card-1{background:linear-gradient(135deg,#e23744,#c1121f)}
+.promo-card-2{background:linear-gradient(135deg,#ff6b35,#f8a305)}
+.promo-card h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px}
+.promo-card p{font-size:14px;opacity:.85}
+.promo-card code{background:rgba(255,255,255,.2);padding:3px 10px;border-radius:6px;font-size:13px;font-weight:700;font-family:'Inter',sans-serif}
+.promo-btn{background:rgba(255,255,255,.9);color:var(--red);border:none;border-radius:10px;padding:12px 22px;font-weight:700;cursor:pointer;font-size:14px;white-space:nowrap;transition:.2s;font-family:'Inter',sans-serif}
+.promo-btn:hover{background:#fff}
+.promo-deco{position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;border:50px solid rgba(255,255,255,.1)}
+.promo-deco2{position:absolute;right:80px;bottom:-40px;width:120px;height:120px;border-radius:50%;border:30px solid rgba(255,255,255,.07)}
+
+/* ── MENU CARDS ── */
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:24px}
+.menu-card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.06);transition:.25s;position:relative}
+.menu-card:hover{transform:translateY(-5px);box-shadow:0 12px 32px rgba(0,0,0,.12)}
+.menu-card-img-wrap{position:relative;overflow:hidden;height:190px}
+.menu-card-img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.menu-card:hover .menu-card-img{transform:scale(1.08)}
+.card-badge{position:absolute;top:12px;left:12px;background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;display:flex;align-items:center;gap:4px}
+.card-badge.spicy{background:#ff6b35}
+.card-badge.new{background:#7c3aed}
+.card-wishlist{position:absolute;top:12px;right:12px;width:34px;height:34px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:.2s;border:none}
+.card-wishlist:hover{transform:scale(1.1)}
+.card-wishlist .ms{font-size:18px;color:var(--gray)}
+.card-wishlist.liked .ms{color:var(--red)}
+.menu-card-body{padding:16px}
+.menu-card-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:16px;margin-bottom:4px}
+.menu-card-meta{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--gray);margin-bottom:8px}
+.menu-card-meta .rating{display:flex;align-items:center;gap:3px;background:#f4f4f5;padding:3px 8px;border-radius:6px;font-weight:700}
+.menu-card-meta .rating .ms{font-size:13px;color:#f8a305}
+.menu-card-desc{font-size:13px;color:var(--gray);line-height:1.5;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.menu-card-footer{display:flex;align-items:center;justify-content:space-between}
+.menu-card-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--dark)}
+.menu-card-price small{font-size:13px;font-weight:500;color:var(--gray);text-decoration:line-through;margin-left:6px}
+.add-to-cart-btn{display:flex;align-items:center;gap:6px;background:var(--red);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;font-family:'Inter',sans-serif}
+.add-to-cart-btn:hover{background:var(--red-dark);transform:scale(1.03)}
+.add-to-cart-btn .ms{font-size:16px}
+
+/* ── HOW IT WORKS ── */
+.how-section{background:#fff;padding:60px 24px}
+.steps-grid{max-width:1280px;margin:auto}
+.steps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:40px}
+.step-card{text-align:center;padding:32px 20px;border-radius:16px;background:var(--light-gray);transition:.2s}
+.step-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.step-icon{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--orange));margin:0 auto 20px;display:flex;align-items:center;justify-content:center;font-size:36px}
+.step-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.step-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;margin-bottom:8px}
+.step-desc{font-size:14px;color:var(--gray);line-height:1.6}
+
+/* ── CART SIDEBAR ── */
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;backdrop-filter:blur(3px)}
+.cart-overlay.show{display:block}
+#cartDrawer{position:fixed;top:0;right:-450px;width:100%;max-width:420px;height:100vh;background:#fff;z-index:500;box-shadow:-10px 0 48px rgba(0,0,0,.18);display:flex;flex-direction:column;transition:right .35s cubic-bezier(.4,0,.2,1)}
+#cartDrawer.open{right:0}
+.cart-head{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid #f0f0f0}
+.cart-head h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800}
+.cart-close-btn{background:var(--light-gray);border:none;border-radius:50%;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+.cart-close-btn:hover{background:#e0e0e0}
+.cart-body{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:20px}
+.cart-empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:16px;color:var(--gray)}
+.cart-empty-state .ms{font-size:72px;opacity:.3}
+.cart-empty-state h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--dark)}
+.cart-item{display:flex;gap:14px;align-items:flex-start;padding:16px;background:var(--light-gray);border-radius:12px}
+.cart-item-img{width:70px;height:70px;border-radius:10px;object-fit:cover;flex-shrink:0}
+.cart-item-info{flex:1;min-width:0}
+.cart-item-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;margin-bottom:6px}
+.cart-item-price{font-weight:700;color:var(--red);font-size:15px}
+.qty-row{display:flex;align-items:center;gap:10px;margin-top:8px}
+.qty-btn{width:30px;height:30px;border-radius:8px;border:2px solid var(--red);background:#fff;color:var(--red);font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
+.qty-btn:hover{background:var(--red);color:#fff}
+.qty-val{font-weight:800;font-size:16px;min-width:24px;text-align:center}
+.cart-del-btn{margin-left:auto;background:none;border:none;cursor:pointer;color:var(--gray);padding:4px;transition:.15s}
+.cart-del-btn:hover{color:var(--red)}
+.cart-foot{padding:20px 24px;border-top:1px solid #f0f0f0;background:#fff}
+.cart-row{display:flex;justify-content:space-between;font-size:14px;color:var(--gray);margin-bottom:10px}
+.cart-row.total-row{font-size:18px;font-weight:800;color:var(--dark);padding-top:12px;border-top:2px solid #f0f0f0;margin-top:4px}
+.go-checkout-btn{width:100%;background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;border:none;border-radius:12px;padding:17px;font-size:16px;font-weight:800;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:.2s;display:flex;align-items:center;justify-content:space-between;margin-top:16px}
+.go-checkout-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(226,55,68,.35)}
+.go-checkout-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:36px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark2);color:#fff;padding:14px 28px;border-radius:12px;font-weight:700;font-size:14px;z-index:9999;opacity:0;pointer-events:none;transition:.3s;display:flex;align-items:center;gap:10px;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── FOOTER ── */
+footer{background:var(--dark2);color:#9fa3af;padding:60px 24px 32px}
+.footer-grid{max-width:1280px;margin:auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-brand .logo{font-size:26px;margin-bottom:16px}
+.footer-brand p{font-size:14px;line-height:1.8;max-width:280px;margin-bottom:24px}
+.footer-socials{display:flex;gap:10px}
+.social-btn{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;font-size:18px}
+.social-btn:hover{background:var(--red)}
+footer h4{font-family:'Plus Jakarta Sans',sans-serif;color:#fff;font-size:15px;font-weight:700;margin-bottom:20px}
+footer ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+footer ul li a{font-size:14px;color:#9fa3af;transition:.2s}
+footer ul li a:hover{color:#fff}
+.footer-bottom{max-width:1280px;margin:auto;border-top:1px solid rgba(255,255,255,.08);padding-top:28px;display:flex;align-items:center;justify-content:space-between;font-size:13px}
+.footer-badges{display:flex;gap:10px}
+.app-badge{background:rgba(255,255,255,.08);padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s}
+.app-badge:hover{background:var(--red);color:#fff}
+
+/* ── SKELETON ── */
+.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:10px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr}.hero-image{display:none}
+  .promos-grid{grid-template-columns:1fr}.steps-row{grid-template-columns:1fr 1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .nav-location{display:none}.steps-row{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}.footer-bottom{flex-direction:column;gap:16px}
+}
+</style>
+<link rel="stylesheet" href="/dark-mode.css">
+<link rel="stylesheet" href="/advanced-features.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-wrap">
+    <a href="/" class="logo"><span class="logo-emoji">🍕</span> Snacks Hub</a>
+    <div class="nav-location">
+      <span class="ms">location_on</span>
+      <span id="locationText">Set location</span>
+      <span class="ms" style="font-size:16px;color:var(--gray)">expand_more</span>
+    </div>
+    <div class="nav-search">
+      <span class="ms" style="color:var(--gray)">search</span>
+      <input type="text" id="navSearch" placeholder="Search for food, dishes..." autocomplete="off"/>
+    </div>
+    <div class="nav-actions">
+
+      <button class="cart-btn" id="cartToggle" onclick="openCart()">
+        <span class="ms">shopping_cart</span>
+        <span>Cart</span>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <div id="guestBtns" style="display:flex;gap:8px">
+        <a href="/login"><button class="nav-btn btn-outline">Login</button></a>
+        <a href="/login#register"><button class="nav-btn btn-fill">Sign Up</button></a>
+      </div>
+      <button id="userMenuBtn">
+        <span class="ms">account_circle</span>
+        <span id="userNameDisplay">User</span>
+        <span class="ms" style="font-size:16px">expand_more</span>
+        <div class="user-dropdown">
+          <a href="/dashboard"><span class="ms" style="font-size:18px">receipt_long</span>My Orders</a>
+          <a href="#" onclick="openWishlist(); return false;"><span class="ms" style="font-size:18px">favorite</span>Favorites</a>
+          <a href="/menu"><span class="ms" style="font-size:18px">restaurant_menu</span>Browse Menu</a>
+
+          <div class="divider-line"></div>
+          <a href="#" id="logoutLink"><span class="ms" style="font-size:18px;color:var(--red)">logout</span>Logout</a>
+        </div>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"><img src="/images/my-canteen.jpg" alt="food bg"/></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1>Hungry? Order from <span class="accent">College Canteen</span></h1>
+      <p>Fresh food from your campus canteen — fast, easy and affordable. Browse 40+ items across multiple categories.</p>
+      <div class="hero-search-bar">
+        <span class="ms" style="color:var(--gray)">search</span>
+        <input type="text" placeholder="Search for biryani, burger, coffee…" id="heroSearch"/>
+        <button onclick="goToMenu()">Find Food →</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">40+</div><div class="stat-label">Menu Items</div></div>
+        <div class="stat"><div class="stat-num">5min</div><div class="stat-label">Avg. Wait</div></div>
+        <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Hygiene</div></div>
+        <div class="stat"><div class="stat-num">200+</div><div class="stat-label">Students</div></div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="/images/fresh-hero.png" alt="Premium Fresh Food" style="border-radius: 50%; width: 380px; height: 380px; object-fit: cover; border: 8px solid #fff; box-shadow: 0 0 0 12px rgba(255, 107, 53, 0.2), 0 30px 60px rgba(0,0,0,0.6); margin-bottom: 20px; animation: float 4s ease-in-out infinite;"/>
+    </div>
+  </div>
+</section>
+
+
+<!-- CATEGORIES -->
+<div class="section" style="padding-bottom:24px">
+  <div class="section-header">
+    <div class="section-title">What's on your mind?</div>
+    <a href="/menu" class="see-all">See all menu <span class="ms" style="font-size:16px">arrow_forward</span></a>
+  </div>
+  <div class="cats-scroll" id="catsScroll">
+    <div class="cat-card active" data-cat="All">
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200" alt="All"/>
+      <span>All</span>
+    </div>
+    <div class="cat-card" data-cat="Burgers">
+      <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" alt="Burgers"/>
+      <span>Burgers</span>
+    </div>
+    <div class="cat-card" data-cat="Drinks">
+      <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=200" alt="Drinks"/>
+      <span>Drinks</span>
+    </div>
+    <div class="cat-card" data-cat="Snacks">
+      <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=200" alt="Snacks"/>
+      <span>Snacks</span>
+    </div>
+    <div class="cat-card" data-cat="Healthy">
+      <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200" alt="Healthy"/>
+      <span>Healthy</span>
+    </div>
+    <div class="cat-card" data-cat="Pizza">
+      <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200" alt="Pizza"/>
+      <span>Pizza</span>
+    </div>
+    <div class="cat-card" data-cat="Coffee">
+      <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=200" alt="Coffee"/>
+      <span>Coffee</span>
+    </div>
+  </div>
+</div>
+
+<!-- PROMO BANNERS -->
+<div class="section" style="padding-top:16px;padding-bottom:16px">
+  <div class="promos-grid">
+    <div class="promo-card promo-card-1" onclick="window.location.href='/menu'">
+      <div>
+        <h3>Mess Card Offer 🎉</h3>
+        <p>Recharge ₹1000 and get ₹100 extra in your wallet!</p>
+      </div>
+      <div class="promo-deco"></div>
+      <div class="promo-deco2"></div>
+      <button class="promo-btn">Recharge</button>
+    </div>
+    <div class="promo-card promo-card-2" onclick="window.location.href='/menu'">
+      <div>
+        <h3>Weekend Specials 🍔</h3>
+        <p>Order on Saturday & Sunday for special discounts!</p>
+      </div>
+      <div class="promo-deco"></div>
+      <div class="promo-deco2"></div>
+      <button class="promo-btn" style="color:#f8a305">Explore</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- POPULAR ITEMS -->
+<div class="section" style="padding-top:16px">
+  <div class="section-header">
+    <div class="section-title">🔥 Popular right now</div>
+    <a href="/menu" class="see-all">View all <span class="ms" style="font-size:16px">arrow_forward</span></a>
+  </div>
+  <div class="menu-grid" id="menuGrid">
+    <!-- skeleton loaders -->
+    <div style="border-radius:16px;overflow:hidden;background:#fff">
+      <div class="skeleton" style="height:190px"></div>
+      <div style="padding:16px"><div class="skeleton" style="height:18px;margin-bottom:10px"></div><div class="skeleton" style="height:14px;margin-bottom:18px"></div><div class="skeleton" style="height:40px"></div></div>
+    </div>
+    <div style="border-radius:16px;overflow:hidden;background:#fff">
+      <div class="skeleton" style="height:190px"></div>
+      <div style="padding:16px"><div class="skeleton" style="height:18px;margin-bottom:10px"></div><div class="skeleton" style="height:14px;margin-bottom:18px"></div><div class="skeleton" style="height:40px"></div></div>
+    </div>
+    <div style="border-radius:16px;overflow:hidden;background:#fff">
+      <div class="skeleton" style="height:190px"></div>
+      <div style="padding:16px"><div class="skeleton" style="height:18px;margin-bottom:10px"></div><div class="skeleton" style="height:14px;margin-bottom:18px"></div><div class="skeleton" style="height:40px"></div></div>
+    </div>
+    <div style="border-radius:16px;overflow:hidden;background:#fff">
+      <div class="skeleton" style="height:190px"></div>
+      <div style="padding:16px"><div class="skeleton" style="height:18px;margin-bottom:10px"></div><div class="skeleton" style="height:14px;margin-bottom:18px"></div><div class="skeleton" style="height:40px"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how-section">
+  <div class="steps-grid">
+    <div style="text-align:center;margin-bottom:0">
+      <div class="section-title" style="text-align:center">How it works</div>
+      <p style="color:var(--gray);font-size:16px;margin-top:10px">Order in 3 simple steps</p>
+    </div>
+    <div class="steps-row">
+      <div class="step-card">
+        <div class="step-icon">🔍</div>
+        <div class="step-num">Step 01</div>
+        <div class="step-title">Browse Menu</div>
+        <div class="step-desc">Explore curated categories and find your perfect meal.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">🛒</div>
+        <div class="step-num">Step 02</div>
+        <div class="step-title">Add to Cart</div>
+        <div class="step-desc">Pick your items, customize quantities and build your order.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">💳</div>
+        <div class="step-num">Step 03</div>
+        <div class="step-title">Pay & Track</div>
+        <div class="step-desc">Pay securely via Razorpay and track your order in real-time.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">🍽️</div>
+        <div class="step-num">Step 04</div>
+        <div class="step-title">Enjoy Your Food</div>
+        <div class="step-desc">Receive fresh, hot food at your table or pickup point.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">🍕 Snacks Hub</div>
+      <p>The fastest and freshest canteen experience, built for students and staff who demand the best.</p>
+      <div class="footer-socials">
+        <div class="social-btn">📘</div>
+        <div class="social-btn">📷</div>
+        <div class="social-btn">🐦</div>
+        <div class="social-btn">💼</div>
+      </div>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>For You</h4>
+      <ul>
+        <li><a href="/menu">Order Food</a></li>
+        <li><a href="/dashboard">My Orders</a></li>
+        <li><a href="/login">Login / Register</a></li>
+        <li><a href="#">Offers & Deals</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Refund Policy</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 Snacks Hub. All rights reserved.</span>
+    <div class="footer-badges">
+      <div class="app-badge">📱 App Store</div>
+      <div class="app-badge">🤖 Google Play</div>
+    </div>
+  </div>
+</footer>
+
+<!-- CART OVERLAY + DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div id="cartDrawer">
+  <div class="cart-head">
+    <h2>🛒 Your Cart</h2>
+    <button class="cart-close-btn" onclick="closeCart()"><span class="ms">close</span></button>
+  </div>
+  <div class="cart-body" id="cartBody"></div>
+  <div class="cart-foot" id="cartFoot" style="display:none">
+    <div class="cart-row"><span>Subtotal</span><span id="cartSubtotal">₹0</span></div>
+    <!-- Delivery fee removed -->
+    <div class="cart-row"><span>Taxes (5%)</span><span id="cartTax">₹0</span></div>
+    <div class="cart-row total-row"><span>Total</span><span id="cartGrandTotal">₹0</span></div>
+    <button class="go-checkout-btn" id="checkoutBtn" onclick="window.location.href='/checkout'">
+      <span>Proceed to Checkout</span>
+      <span id="checkoutAmt">₹0</span>
+    </button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CART ENGINE ──────────────────────────────────────
+const Cart = {
+  get: () => JSON.parse(localStorage.getItem('sh_cart') || '[]'),
+  save(c) { localStorage.setItem('sh_cart', JSON.stringify(c)); this.render(); },
+  add(item) {
+    const c = this.get(); const ex = c.find(i => i.id === item.id);
+    ex ? ex.qty++ : c.push({...item, qty:1});
+    this.save(c); showToast(`✅ ${item.name} added!`);
+  },
+  remove(id) { this.save(this.get().filter(i => i.id !== id)); },
+  updateQty(id, d) {
+    const c = this.get(); const itm = c.find(i => i.id === id);
+    if (!itm) return; itm.qty += d;
+    if (itm.qty <= 0) return this.remove(id); this.save(c);
+  },
+  subtotal() { return this.get().reduce((s,i) => s + i.price * i.qty, 0); },
+  count() { return this.get().reduce((s,i) => s + i.qty, 0); },
+  render() {
+    const c = this.get();
+    const badge = document.getElementById('cartBadge');
+    if (badge) badge.textContent = this.count();
+    const body = document.getElementById('cartBody');
+    const foot = document.getElementById('cartFoot');
+    if (!body) return;
+    if (!c.length) {
+      body.innerHTML = `<div class="cart-empty-state"><span class="ms">shopping_cart</span><h3>Your cart is empty</h3><p>Browse the menu and add something delicious!</p><a href="/menu"><button style="background:var(--red);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-weight:700;cursor:pointer;margin-top:8px;font-family:'Plus Jakarta Sans',sans-serif">Browse Menu</button></a></div>`;
+      if (foot) foot.style.display = 'none'; return;
+    }
+    body.innerHTML = c.map(i => `<div class="cart-item">
+      <img class="cart-item-img" src="${i.image_url}" onerror="this.src='https://via.placeholder.com/70'">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${i.name}</div>
+        <div class="cart-item-price">₹${(i.price*i.qty).toFixed(2)}</div>
+        <div class="qty-row">
+          <button class="qty-btn" onclick="Cart.updateQty(${i.id},-1)">−</button>
+          <span class="qty-val">${i.qty}</span>
+          <button class="qty-btn" onclick="Cart.updateQty(${i.id},1)">+</button>
+        </div>
+      </div>
+      <button class="cart-del-btn" onclick="Cart.remove(${i.id})"><span class="ms">delete</span></button>
+    </div>`).join('');
+    if (foot) {
+      foot.style.display = 'block';
+      const sub = this.subtotal(); const tax = sub * 0.05; const total = sub + tax;
+      document.getElementById('cartSubtotal').textContent = `₹${sub.toFixed(2)}`;
+      document.getElementById('cartTax').textContent = `₹${tax.toFixed(2)}`;
+      document.getElementById('cartGrandTotal').textContent = `₹${total.toFixed(2)}`;
+      document.getElementById('checkoutAmt').textContent = `₹${total.toFixed(2)}`;
+    }
+  }
+};
+
+function openCart() { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartOverlay').classList.add('show'); }
+function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('show'); }
+
+function showToast(msg, duration=2500) {
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+// ── AUTH ──────────────────────────────────────────────
+function checkAuth() {
+  const s = JSON.parse(localStorage.getItem('sh_session') || 'null');
+  const guest = document.getElementById('guestBtns');
+  const userBtn = document.getElementById('userMenuBtn');
+  if (s && s.user) {
+    if (guest) guest.style.display = 'none';
+    if (userBtn) { userBtn.style.display = 'flex'; }
+    const name = s.user.user_metadata?.name || s.user.email?.split('@')[0] || 'User';
+    const el = document.getElementById('userNameDisplay'); if (el) el.textContent = name;
+  }
+}
+document.getElementById('logoutLink')?.addEventListener('click', e => {
+  e.preventDefault();
+  if (confirm('Sign out?')) { localStorage.removeItem('sh_session'); location.reload(); }
+});
+
+// ── MENU LOADER ───────────────────────────────────────
+let allItems = []; let activeCategory = 'All';
+async function loadMenu() {
+  try {
+    const res = await fetch('/api/menu'); allItems = await res.json();
+    renderMenu(allItems.slice(0,8));
+  } catch(e) { console.error(e); }
+}
+
+const RATINGS = [4.1,4.3,4.5,4.2,4.7,4.4,4.6,4.8];
+const BADGES = ['','Bestseller','New','Spicy','Healthy','','Chef\'s Pick',''];
+function renderMenu(items) {
+  const grid = document.getElementById('menuGrid');
+  if (!items.length) { grid.innerHTML = '<p style="color:var(--gray);grid-column:1/-1;text-align:center;padding:40px">No items found.</p>'; return; }
+  grid.innerHTML = items.map((item,idx) => {
+    const badge = item.category === 'Healthy' ? '<div class="card-badge">🥗 Healthy</div>' : BADGES[idx % BADGES.length] ? `<div class="card-badge">${BADGES[idx%BADGES.length]}</div>` : '';
+    const rating = RATINGS[idx % RATINGS.length];
+    const origPrice = (item.price * 1.2).toFixed(2);
+    return `<div class="menu-card">
+      <div class="menu-card-img-wrap">
+        <img class="menu-card-img" src="${item.image_url}" onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400'" loading="lazy"/>
+        ${badge}
+        <button class="card-wishlist ${Wishlist.has(item.id) ? 'liked' : ''}" onclick="toggleWish(this, ${item.id})" title="Wishlist"><span class="ms">favorite</span></button>
+      </div>
+      <div class="menu-card-body">
+        <div class="menu-card-title">${item.name}</div>
+        <div class="menu-card-meta">
+          <span class="rating"><span class="ms">star</span>${rating}</span>
+          <span>• ${item.category}</span>
+          <span>• 5-10 min wait</span>
+        </div>
+        <div class="menu-card-desc">${item.description || ''}</div>
+        <div style="display:flex;gap:8px;margin-bottom:12px">
+          <button class="nav-btn btn-outline" style="flex:1;padding:8px;font-size:12px" onclick="openCustomization({id:${item.id},name:'${item.name.replace(/'/g,"\\'")}',price:${item.price},image_url:'${item.image_url}',description:'${(item.description || '').replace(/'/g,"\\'")}'})" title="Customize">
+            <span class="ms" style="font-size:16px">tune</span>
+          </button>
+          <button class="nav-btn btn-outline" style="flex:1;padding:8px;font-size:12px" onclick="addShareButtons(${item.id})" title="Share">
+            <span class="ms" style="font-size:16px">share</span>
+          </button>
+        </div>
+        <div class="menu-card-footer">
+          <div class="menu-card-price">₹${parseFloat(item.price).toFixed(2)}<small>₹${origPrice}</small></div>
+          <button class="add-to-cart-btn" onclick="Cart.add({id:${item.id},name:'${item.name.replace(/'/g,"\\'")}',price:${item.price},image_url:'${item.image_url}'})">
+            <span class="ms">add_shopping_cart</span>Add
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// toggleWish is now handled by advanced-features.js
+
+// Category filter
+document.getElementById('catsScroll')?.addEventListener('click', e => {
+  const card = e.target.closest('.cat-card'); if (!card) return;
+  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
+  card.classList.add('active'); activeCategory = card.dataset.cat;
+  const filtered = activeCategory === 'All' ? allItems : allItems.filter(i => i.category === activeCategory);
+  renderMenu(filtered.slice(0,8));
+});
+
+// Search
+document.getElementById('navSearch')?.addEventListener('input', e => {
+  const q = e.target.value.toLowerCase();
+  if (!q) return renderMenu(allItems.slice(0,8));
+  renderMenu(allItems.filter(i => i.name.toLowerCase().includes(q) || (i.description||'').toLowerCase().includes(q)));
+});
+document.getElementById('heroSearch')?.addEventListener('keydown', e => { if (e.key === 'Enter') goToMenu(); });
+function goToMenu() {
+  const q = document.getElementById('heroSearch').value;
+  window.location.href = q ? `/menu?q=${encodeURIComponent(q)}` : '/menu';
+}
+
+// Location
+document.querySelector('.nav-location')?.addEventListener('click', () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(() => {
+      document.getElementById('locationText').textContent = 'Near You';
+      showToast('📍 Location detected!');
+    }, () => showToast('📍 Enable location access'));
+  }
+});
+
+// Init
+checkAuth(); loadMenu(); Cart.render();
+setTimeout(() => {
+  if (window.CollegeCanteen) {
+    // 1. Status Banner in Hero
+    const heroText = document.querySelector('.hero-text');
+    if (heroText) heroText.insertAdjacentHTML('afterbegin', CollegeCanteen.renderStatusBanner());
+
+    // 2. Today's Special near promos
+    const promosGrid = document.querySelector('.promos-grid');
+    if (promosGrid) promosGrid.insertAdjacentHTML('beforebegin', CollegeCanteen.renderTodaysSpecial());
+
+    // 3. Optional: Quick Order in nav (if not in drop-down)
+    const navActions = document.querySelector('.nav-actions');
+    if (navActions) navActions.insertAdjacentHTML('afterbegin', CollegeCanteen.renderQuickOrderButton());
+  }
+}, 200);
+</script>
+<script src="/features.js"></script>
+<script src="/advanced-features.js"></script>
+<script src="/college-canteen.js"></script>
+</body>
+</html>

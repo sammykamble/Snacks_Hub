@@ -1,0 +1,226 @@
+/* ═══════════════════════════════════════════════════════════
+   DARK MODE STYLES
+   ═══════════════════════════════════════════════════════════ */
+
+/* Dark mode variables */
+body.dark-mode {
+  --dark: #ffffff;
+  --dark2: #f4f4f5;
+  --gray: #a0a0a0;
+  --light-gray: #2a2a2a;
+  --white: #1a1a1a;
+  --shadow: 0 4px 24px rgba(255,255,255,.1);
+}
+
+/* Dark mode backgrounds */
+body.dark-mode {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+body.dark-mode nav {
+  background: #2a2a2a;
+  box-shadow: 0 2px 10px rgba(255,255,255,.05);
+}
+
+body.dark-mode .nav-search,
+body.dark-mode .nav-location,
+body.dark-mode .cart-btn,
+body.dark-mode #userMenuBtn {
+  background: #333333;
+  color: #ffffff;
+}
+
+body.dark-mode .nav-search input {
+  color: #ffffff;
+}
+
+body.dark-mode .nav-search input::placeholder {
+  color: #888888;
+}
+
+body.dark-mode .brands-strip {
+  background: #2a2a2a;
+  border-bottom: 1px solid #333333;
+}
+
+body.dark-mode .cat-card,
+body.dark-mode .menu-card,
+body.dark-mode .step-card {
+  background: #2a2a2a;
+  box-shadow: 0 2px 16px rgba(255,255,255,.06);
+}
+
+body.dark-mode .menu-card:hover {
+  box-shadow: 0 12px 32px rgba(255,255,255,.12);
+}
+
+body.dark-mode .how-section {
+  background: #2a2a2a;
+}
+
+body.dark-mode footer {
+  background: #1a1a1a;
+  color: #a0a0a0;
+}
+
+body.dark-mode .user-dropdown {
+  background: #2a2a2a;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5);
+}
+
+body.dark-mode .user-dropdown a:hover {
+  background: #333333;
+}
+
+body.dark-mode #cartDrawer {
+  background: #2a2a2a;
+}
+
+body.dark-mode .cart-item {
+  background: #333333;
+}
+
+body.dark-mode .cart-foot {
+  background: #2a2a2a;
+  border-top: 1px solid #333333;
+}
+
+/* Dark mode toggle button */
+.dark-mode-toggle {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(226, 55, 68, 0.4);
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.dark-mode-toggle:hover {
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 12px 32px rgba(226, 55, 68, 0.6);
+}
+
+.dark-mode-toggle .ms {
+  font-size: 28px;
+  color: #fff;
+}
+
+/* Smooth transitions for dark mode */
+body,
+nav,
+.nav-search,
+.nav-location,
+.cart-btn,
+#userMenuBtn,
+.brands-strip,
+.cat-card,
+.menu-card,
+.step-card,
+.how-section,
+footer,
+.user-dropdown,
+#cartDrawer,
+.cart-item,
+.cart-foot {
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Search autocomplete dropdown */
+.search-autocomplete {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.15);
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+}
+
+.search-autocomplete.show {
+  display: block;
+}
+
+.search-autocomplete-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: 0.2s;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.search-autocomplete-item:last-child {
+  border-bottom: none;
+}
+
+.search-autocomplete-item:hover {
+  background: var(--light-gray);
+}
+
+.search-autocomplete-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.search-autocomplete-item-info {
+  flex: 1;
+}
+
+.search-autocomplete-item-name {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.search-autocomplete-item-category {
+  font-size: 12px;
+  color: var(--gray);
+}
+
+.search-autocomplete-item-price {
+  font-weight: 700;
+  color: var(--red);
+  font-size: 14px;
+}
+
+.search-no-results {
+  padding: 20px;
+  text-align: center;
+  color: var(--gray);
+  font-size: 14px;
+}
+
+body.dark-mode .search-autocomplete {
+  background: #2a2a2a;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5);
+}
+
+body.dark-mode .search-autocomplete-item {
+  border-bottom: 1px solid #333333;
+}
+
+body.dark-mode .search-autocomplete-item:hover {
+  background: #333333;
+}
+
+/* Wrapper for search with autocomplete */
+.nav-search {
+  position: relative;
+}

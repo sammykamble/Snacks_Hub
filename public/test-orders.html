@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test Orders</title>
+<style>
+body{font-family:Arial;padding:20px;max-width:800px;margin:0 auto}
+button{padding:10px 20px;margin:5px;cursor:pointer;background:#e23744;color:white;border:none;border-radius:5px}
+pre{background:#f5f5f5;padding:15px;border-radius:5px;overflow:auto}
+</style>
+</head>
+<body>
+<h1>🧪 Order System Test</h1>
+
+<h2>1. Check Session</h2>
+<button onclick="checkSession()">Check Login Status</button>
+<pre id="sessionResult"></pre>
+
+<h2>2. Fetch Orders</h2>
+<button onclick="fetchOrders()">Get All Orders</button>
+<button onclick="fetchMyOrders()">Get My Orders</button>
+<pre id="ordersResult"></pre>
+
+<h2>3. Create Test Order</h2>
+<button onclick="createTestOrder()">Create Test Order</button>
+<pre id="createResult"></pre>
+
+<script>
+function checkSession() {
+  const sess = JSON.parse(localStorage.getItem('sh_session') || 'null');
+  document.getElementById('sessionResult').textContent = JSON.stringify(sess, null, 2);
+}
+
+async function fetchOrders() {
+  try {
+    const res = await fetch('/api/orders');
+    const data = await res.json();
+    document.getElementById('ordersResult').textContent = 
+      `Found ${data.length} orders:\n\n` + JSON.stringify(data, null, 2);
+  } catch (e) {
+    document.getElementById('ordersResult').textContent = 'Error: ' + e.message;
+  }
+}
+
+async function fetchMyOrders() {
+  const sess = JSON.parse(localStorage.getItem('sh_session') || 'null');
+  if (!sess?.user?.id) {
+    document.getElementById('ordersResult').textContent = 'Not logged in!';
+    return;
+  }
+  
+  try {
+    const res = await fetch(`/api/orders?user_id=${sess.user.id}`);
+    const data = await res.json();
+    document.getElementById('ordersResult').textContent = 
+      `Found ${data.length} orders for user ${sess.user.id}:\n\n` + JSON.stringify(data, null, 2);
+  } catch (e) {
+    document.getElementById('ordersResult').textContent = 'Error: ' + e.message;
+  }
+}
+
+async function createTestOrder() {
+  const sess = JSON.parse(localStorage.getItem('sh_session') || 'null');
+  const user_id = sess?.user?.id || 'test_user';
+  
+  const testOrder = {
+    user_id: user_id,
+    items: [
+      { id: 1, name: 'Samosa', price: 20, qty: 2, image_url: '/images/menu/samosa.jpg' },
+      { id: 2, name: 'Tea', price: 20, qty: 1, image_url: '/images/menu/tea.jpg' }
+    ],
+    total_amount: 60,
+    payment_id: 'test_' + Date.now()
+  };
+  
+  try {
+    const res = await fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(testOrder)
+    });
+    const data = await res.json();
+    document.getElementById('createResult').textContent = 
+      'Order created successfully:\n\n' + JSON.stringify(data, null, 2);
+  } catch (e) {
+    document.getElementById('createResult').textContent = 'Error: ' + e.message;
+  }
+}
+
+// Auto-check on load
+checkSession();
+</script>
+</body>
+</html>

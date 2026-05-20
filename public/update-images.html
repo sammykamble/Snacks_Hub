@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Update Menu Images</title>
+<style>
+body{font-family:Arial,sans-serif;padding:20px;max-width:800px;margin:0 auto}
+h1{color:#e23744}
+.item{border:1px solid #ddd;padding:15px;margin:10px 0;border-radius:8px}
+.item img{width:100px;height:100px;object-fit:cover;border-radius:8px}
+input{width:100%;padding:8px;margin:5px 0;border:1px solid #ddd;border-radius:4px}
+button{background:#e23744;color:white;padding:10px 20px;border:none;border-radius:4px;cursor:pointer}
+button:hover{background:#c1121f}
+.success{color:green;font-weight:bold}
+.error{color:red;font-weight:bold}
+</style>
+</head>
+<body>
+<h1>🖼️ Update Menu Images</h1>
+<p>Update image URLs for your menu items. Use local paths like: <code>/images/menu/samosa.jpg</code></p>
+
+<div id="menuItems"></div>
+
+<script>
+const API_URL = 'http://localhost:3000';
+
+async function loadMenu() {
+  const res = await fetch(`${API_URL}/api/menu`);
+  const items = await res.json();
+  
+  const container = document.getElementById('menuItems');
+  container.innerHTML = items.map(item => `
+    <div class="item">
+      <h3>${item.name}</h3>
+      <img src="${item.image_url}" onerror="this.src='https://via.placeholder.com/100?text=No+Image'" />
+      <p><strong>Current URL:</strong> ${item.image_url}</p>
+      <input type="text" id="url-${item.id}" value="${item.image_url}" placeholder="/images/menu/item-name.jpg" />
+      <button onclick="updateImage(${item.id}, '${item.name}')">Update Image</button>
+      <span id="status-${item.id}"></span>
+    </div>
+  `).join('');
+}
+
+async function updateImage(id, name) {
+  const newUrl = document.getElementById(`url-${id}`).value;
+  const statusEl = document.getElementById(`status-${id}`);
+  
+  try {
+    const res = await fetch(`${API_URL}/api/menu/${id}`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        name: name,
+        image_url: newUrl
+      })
+    });
+    
+    if (res.ok) {
+      statusEl.innerHTML = '<span class="success">✅ Updated!</span>';
+      setTimeout(() => statusEl.innerHTML = '', 3000);
+    } else {
+      statusEl.innerHTML = '<span class="error">❌ Failed</span>';
+    }
+  } catch (e) {
+    statusEl.innerHTML = '<span class="error">❌ Error: ' + e.message + '</span>';
+  }
+}
+
+loadMenu();
+</script>
+</body>
+</html>
