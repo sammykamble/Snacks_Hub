@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Checkout – Snacks Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#e23744;--dark:#282c3f;--gray:#686b78;--light:#f4f4f5;--white:#fff;--green:#26a541}
+body{font-family:'Be Vietnam Pro',sans-serif;background:var(--light);color:var(--dark)}
+a{text-decoration:none;color:inherit}
+nav{background:var(--white);box-shadow:0 2px 8px rgba(0,0,0,.08);padding:0 24px;height:68px;display:flex;align-items:center;gap:16px}
+.logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--primary)}
+.page{max-width:1100px;margin:32px auto;padding:0 24px;display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:start}
+@media(max-width:860px){.page{grid-template-columns:1fr}}
+.card{background:var(--white);border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:20px}
+.card-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.card-title .material-symbols-outlined{color:var(--primary)}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:13px;font-weight:600;color:var(--gray);margin-bottom:5px}
+.form-input{width:100%;padding:12px 14px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:14px;font-family:'Be Vietnam Pro',sans-serif;outline:none;transition:.2s;color:var(--dark)}
+.form-input:focus{border-color:var(--primary)}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.delivery-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.delivery-opt{border:1.5px solid #e0e0e0;border-radius:10px;padding:14px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600}
+.delivery-opt.selected{border-color:var(--primary);background:rgba(226,55,68,.04);color:var(--primary)}
+.pay-opts{display:flex;flex-direction:column;gap:10px}
+.pay-opt{border:1.5px solid #e0e0e0;border-radius:10px;padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600;transition:.2s}
+.pay-opt.selected{border-color:var(--primary);background:rgba(226,55,68,.04)}
+.pay-opt input{accent-color:var(--primary);width:16px;height:16px}
+.summary-card{background:var(--white);border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);position:sticky;top:24px}
+.summary-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;margin-bottom:16px}
+.summary-items{max-height:220px;overflow-y:auto;margin-bottom:14px}
+.s-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--light)}
+.s-item:last-child{border-bottom:none}
+.s-item img{width:44px;height:44px;border-radius:8px;object-fit:cover}
+.s-item-name{font-size:13px;font-weight:700}
+.s-item-qty{font-size:12px;color:var(--gray)}
+.s-item-price{font-size:13px;font-weight:700;color:var(--primary);margin-left:auto;flex-shrink:0}
+.total-row{display:flex;justify-content:space-between;font-size:14px;color:var(--gray);margin-bottom:7px}
+.total-row.grand{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--dark);border-top:1.5px solid var(--light);padding-top:12px;margin-top:6px}
+.promo-row{display:flex;gap:8px;margin-bottom:12px}
+.promo-input{flex:1;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:14px;font-family:'Be Vietnam Pro',sans-serif;outline:none;transition:.2s}
+.promo-input:focus{border-color:var(--primary)}
+.promo-btn{background:var(--light);border:none;border-radius:10px;padding:0 18px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif;transition:.2s;white-space:nowrap}
+.promo-btn:hover{background:var(--primary);color:#fff}
+.place-btn{width:100%;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif;display:flex;align-items:center;justify-content:space-between;margin-top:6px;transition:.2s}
+.place-btn:hover:not(:disabled){background:#c1121f}
+.place-btn:disabled{opacity:.65;cursor:not-allowed}
+.secured{display:flex;align-items:center;gap:6px;justify-content:center;font-size:12px;color:var(--gray);margin-top:10px}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:999;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--white);border-radius:20px;padding:48px 32px;max-width:400px;width:90%;text-align:center;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.modal h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;margin:16px 0 10px}
+.modal p{color:var(--gray);line-height:1.7;margin-bottom:24px}
+.modal-btn{background:var(--primary);color:#fff;border:none;border-radius:10px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif}
+</style>
+<link rel="stylesheet" href="/dark-mode.css">
+<link rel="stylesheet" href="/advanced-features.css">
+</head>
+<body>
+<nav>
+  <a href="/" class="logo">🍕 Snacks Hub</a>
+  <div style="margin-left:auto;font-size:14px;color:var(--gray);display:flex;align-items:center;gap:6px">
+    <span class="material-symbols-outlined" style="font-size:16px;color:var(--green)">lock</span>Secure Checkout
+  </div>
+</nav>
+
+<div class="page">
+  <div>
+    <div class="card">
+      <div class="card-title"><span class="material-symbols-outlined">person</span>Order Info</div>
+      <div class="form-group"><label>Full Name</label><input class="form-input" id="delName" placeholder="Your name"/></div>
+      <div class="row-2">
+        <div class="form-group"><label>Phone</label><input class="form-input" id="delPhone" placeholder="+91 98765 43210" type="tel"/></div>
+        <div class="form-group"><label>Room / Block</label><input class="form-input" id="delRoom" placeholder="Block C, Room 204"/></div>
+      </div>
+      <div class="form-group" style="margin-bottom:0"><label>Special Instructions</label><textarea class="form-input" rows="2" placeholder="e.g. No onions, extra sauce…" style="resize:vertical"></textarea></div>
+      <div class="form-group" style="margin-top:14px; margin-bottom:0">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+          <input type="checkbox" id="facultyCheck" onchange="toggleFaculty()" style="width:16px;height:16px;accent-color:var(--primary)"/>
+          <span style="font-weight:700">I am a Faculty / Staff Member</span>
+        </label>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="material-symbols-outlined">storefront</span>Order Type</div>
+      <div class="delivery-opts">
+        <div class="delivery-opt selected" id="optPick" onclick="selDel(this)"><span class="material-symbols-outlined">storefront</span><div><div>Counter Collection</div><small style="color:var(--gray)">Self-serve</small></div></div>
+        <div class="delivery-opt" id="optDine" onclick="selDel(this)"><span class="material-symbols-outlined">restaurant</span><div><div>Dine In</div><small style="color:var(--gray)">At Canteen Table</small></div></div>
+        <div class="delivery-opt" id="optStaff" onclick="selDel(this)" style="display:none"><span class="material-symbols-outlined">work</span><div><div>Staff Room Delivery</div><small style="color:var(--gray)">To your department</small></div></div>
+      </div>
+      <div class="form-group" style="margin-top:16px; margin-bottom:0">
+        <label>Pre-order Time Slot</label>
+        <select class="form-input" id="timeSlot">
+          <option value="immediate">Immediately (10-15 min)</option>
+          <option value="break1">Lunch Break (1:00 PM - 1:45 PM)</option>
+          <option value="break2">Evening Recess (4:00 PM)</option>
+        </select>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="material-symbols-outlined">payments</span>Payment Method</div>
+      <div class="pay-opts">
+        <label class="pay-opt"><input type="radio" name="pay" value="mess_card"/><span class="material-symbols-outlined" style="color:#7c3aed">credit_card</span><span>Mess Card (Bal: ₹<span id="messBalVal">0.00</span>)</span></label>
+        <label class="pay-opt selected"><input type="radio" name="pay" value="razorpay" checked/><span>Online App Payment (UPI / Cards)</span><span style="margin-left:auto;font-size:12px;color:var(--green);font-weight:700">Rec</span></label>
+        <label class="pay-opt"><input type="radio" name="pay" value="cod"/><span>Pay at Counter</span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-title">Order Summary</div>
+    <div class="summary-items" id="sumItems"></div>
+    <div class="promo-row">
+      <input class="promo-input" id="promoInput" placeholder="Promo code (try HOSTEL10)"/>
+      <button class="promo-btn" onclick="applyPromo()">Apply</button>
+    </div>
+    <div id="promoMsg" style="font-size:13px;margin-bottom:10px"></div>
+    <div class="total-row"><span>Subtotal</span><span id="subEl">₹0</span></div>
+    <!-- Delivery removed -->
+    <div class="total-row" id="discRow" style="display:none;color:var(--green)"><span>Discount</span><span id="discEl">-₹0</span></div>
+    <div class="total-row grand"><span>Total</span><span id="grandEl">₹0</span></div>
+    <button class="place-btn" id="placeBtn" onclick="placeOrder()"><span>Place Order</span><span id="placeAmt">₹0</span></button>
+    <div class="secured"><span class="material-symbols-outlined" style="font-size:14px">lock</span>256-bit SSL Secured</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <div style="font-size:64px">🎉</div>
+    <h2>Order Placed!</h2>
+    <p>Your order is confirmed and being prepared. It'll be ready in 15–20 minutes!</p>
+    <button class="modal-btn" onclick="window.location.href='/dashboard'">Track My Order →</button>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="/email-notifications.js"></script>
+<script>
+const Cart={get:()=>JSON.parse(localStorage.getItem('sh_cart')||'[]'),clear:()=>localStorage.removeItem('sh_cart')};
+let discount=0;
+
+function render(){
+  const cart=Cart.get();
+  if(!cart.length){document.querySelector('.page').innerHTML='<div style="text-align:center;padding:80px;color:var(--gray)"><div style="font-size:64px">🛒</div><h2 style="font-family:Plus Jakarta Sans;font-size:22px;margin:16px 0">Cart is empty</h2><a href="/menu"><button style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer">Browse Menu</button></a></div>';return;}
+  document.getElementById('sumItems').innerHTML=cart.map(i=>`<div class="s-item"><img src="${i.image_url}" onerror="this.src='https://via.placeholder.com/44'"/><div><div class="s-item-name">${i.name}</div><div class="s-item-qty">x${i.qty}</div></div><div class="s-item-price">₹${(i.price*i.qty).toFixed(2)}</div></div>`).join('');
+  calcTotals();
+}
+
+function calcTotals(){
+  const sub=Cart.get().reduce((s,i)=>s+i.price*i.qty,0);
+  const grand=sub-discount;
+  document.getElementById('subEl').textContent=`₹${sub.toFixed(2)}`;
+  document.getElementById('grandEl').textContent=`₹${grand.toFixed(2)}`;
+  document.getElementById('placeAmt').textContent=`₹${grand.toFixed(2)}`;
+}
+
+function applyPromo(){
+  const code=document.getElementById('promoInput').value.trim().toUpperCase();
+  const msg=document.getElementById('promoMsg');
+  if(code==='HOSTEL10'){
+    const sub=Cart.get().reduce((s,i)=>s+i.price*i.qty,0);
+    discount=parseFloat((sub*0.1).toFixed(2));
+    document.getElementById('discRow').style.display='flex';
+    document.getElementById('discEl').textContent=`-₹${discount.toFixed(2)}`;
+    msg.innerHTML='<span style="color:var(--green)">✅ 10% discount applied!</span>';
+    calcTotals();
+  } else { msg.innerHTML='<span style="color:var(--primary)">❌ Invalid code</span>'; }
+}
+
+function selDel(el){document.querySelectorAll('.delivery-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');}
+function toggleFaculty(){
+  const isFaculty = document.getElementById('facultyCheck').checked;
+  const staffOpt = document.getElementById('optStaff');
+  if(isFaculty){ staffOpt.style.display = 'flex'; }
+  else { staffOpt.style.display = 'none'; document.getElementById('optPick').click(); }
+}
+document.querySelectorAll('.pay-opt').forEach(o=>{o.addEventListener('click',()=>{document.querySelectorAll('.pay-opt').forEach(p=>p.classList.remove('selected'));o.classList.add('selected');});});
+
+
+async function placeOrder(){
+  const name=document.getElementById('delName').value.trim();
+  const phone=document.getElementById('delPhone').value.trim();
+  if(!name){alert('Please enter your name');return;}
+  if(!phone){alert('Please enter your phone number');return;}
+  const cart=Cart.get();
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const total=+(sub-discount).toFixed(2);
+  const payMethod=document.querySelector('input[name="pay"]:checked').value;
+  const session=JSON.parse(localStorage.getItem('sh_session')||'null');
+  const user_id=session?.user?.id||null;
+  const btn=document.getElementById('placeBtn');
+
+  // Capture Pickup Time
+  const timeSlotEl = document.getElementById('timeSlot');
+  const timeSlotText = timeSlotEl.options[timeSlotEl.selectedIndex].text;
+  const isFaculty = document.getElementById('facultyCheck').checked;
+  const facultyText = isFaculty ? ` (Deliver to ${document.getElementById('delRoom').value})` : '';
+  const finalPickup = timeSlotText + facultyText;
+
+  // Add pickup info to the first item
+  const cartToSubmit = cart.map((item, idx) => {
+    if (idx === 0) return { ...item, pickup_time: finalPickup };
+    return item;
+  });
+
+  btn.disabled=true;btn.innerHTML='<span>Processing…</span>';
+
+  if(payMethod==='cod' || payMethod==='mess_card'){
+    if (payMethod==='mess_card') {
+      let bal = parseFloat(localStorage.getItem('mess_card_balance')||'500');
+      if(bal < total) { alert('Insufficient Mess Card Balance! Please recharge.'); btn.disabled=false; btn.innerHTML=`<span>Place Order</span><span>₹${total.toFixed(2)}</span>`; return; }
+      localStorage.setItem('mess_card_balance', (bal - total).toFixed(2));
+    }
+    await fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id,items:cartToSubmit,total_amount:total,payment_id:payMethod==='mess_card'?'MESS_CARD':'COD'})});
+    Cart.clear();document.getElementById('successModal').classList.add('show');return;
+  }
+
+  try{
+    const configRes = await fetch('/api/payment/config');
+    const config = await configRes.json();
+
+    if (!config.key) {
+      alert('Razorpay is not configured. Add RAZORPAY_KEY_ID and RAZORPAY_SECRET to .env and restart the server.');
+      btn.disabled=false;
+      btn.innerHTML=`<span>Place Order</span><span>₹${total.toFixed(2)}</span>`;
+      return;
+    }
+
+    const r=await fetch('/api/payment/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:total})});
+    const order=await r.json();
+    if (!r.ok || order.error) {
+      alert('Could not start payment: ' + (order.error || 'Unknown error'));
+      btn.disabled=false;
+      btn.innerHTML=`<span>Place Order</span><span>₹${total.toFixed(2)}</span>`;
+      return;
+    }
+    if(order.demo){
+      await fetch('/api/payment/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({razorpay_order_id:order.id,razorpay_payment_id:'demo',razorpay_signature:'',items:cartToSubmit,total_amount:total,user_id})});
+      Cart.clear();document.getElementById('successModal').classList.add('show');return;
+    }
+    new Razorpay({
+      key:config.key,
+      amount:order.amount,
+      currency:order.currency || 'INR',
+      name:'Snacks Hub',
+      description:'Canteen order',
+      order_id:order.id,
+      prefill:{name,contact:phone},
+      theme:{color:'#e23744'},
+      notes:{ mode: config.mode || 'test' },
+      handler:async function(res){
+        try{
+          const verifyRes = await fetch('/api/payment/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...res,items:cartToSubmit,total_amount:total,user_id})});
+          const verifyData = await verifyRes.json();
+          if(verifyData.msg === 'success'){
+            Cart.clear();
+            document.getElementById('successModal').classList.add('show');
+          } else {
+            alert('Payment verification failed. Please contact support.');
+            btn.disabled=false;
+            btn.innerHTML=`<span>Place Order</span><span>₹${total.toFixed(2)}</span>`;
+          }
+        } catch(err){
+          alert('Payment processing error. Please try again.');
+          btn.disabled=false;
+          btn.innerHTML=`<span>Place Order</span><span>₹${total.toFixed(2)}</span>`;
+        }
+      },
+      modal:{
+        ondismiss:function(){
+          btn.disabled=false;
+          btn.innerHTML=`<span>Place Order</span><span>₹${total.toFixed(2)}</span>`;
+        }
+      }
+    }).open();
+    btn.disabled=false;btn.innerHTML=`<span>Place Order</span><span>₹${total.toFixed(2)}</span>`;
+  } catch(e){
+    console.error('Checkout error:', e);
+    alert('Payment initialization failed: ' + e.message);
+    btn.disabled=false;
+    btn.innerHTML=`<span>Place Order</span><span>₹${total.toFixed(2)}</span>`;
+  }
+}
+
+const sess=JSON.parse(localStorage.getItem('sh_session')||'null');
+if(sess?.user) document.getElementById('delName').value=sess.user.user_metadata?.name||'';
+document.getElementById('messBalVal').textContent = parseFloat(localStorage.getItem('mess_card_balance')||'500').toFixed(2);
+render();
+</script>
+<script src="/features.js"></script>
+<script src="/advanced-features.js"></script>
+</body>
+</html>
